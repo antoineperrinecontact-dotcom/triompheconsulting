@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <!-- White Spartan helmet -->
+  <g fill="white">
+    <!-- Helmet main body -->
+    <path d="M200 40 C160 40 130 70 130 110 L130 140 C130 150 140 160 150 160 L250 160 C260 160 270 150 270 140 L270 110 C270 70 240 40 200 40 Z"/>
+    
+    <!-- Helmet crest -->
+    <path d="M200 30 C190 30 185 35 185 40 L185 50 C185 55 190 60 200 60 C210 60 215 55 215 50 L215 40 C215 35 210 30 200 30 Z"/>
+    
+    <!-- Eye slits -->
+    <rect x="160" y="80" width="25" height="8" rx="4" fill="transparent" stroke="white" stroke-width="2"/>
+    <rect x="215" y="80" width="25" height="8" rx="4" fill="transparent" stroke="white" stroke-width="2"/>
+    
+    <!-- Nose guard -->
+    <rect x="195" y="90" width="10" height="30" rx="2" fill="white"/>
+    
+    <!-- Cheek guards -->
+    <path d="M140 120 C140 130 145 140 155 145 L155 155 C155 158 158 160 160 160 L180 160 C185 160 190 155 190 150 L190 130 C185 125 170 120 155 120 C145 120 140 120 140 120 Z"/>
+    <path d="M260 120 C260 130 255 140 245 145 L245 155 C245 158 242 160 240 160 L220 160 C215 160 210 155 210 150 L210 130 C215 125 230 120 245 120 C255 120 260 120 260 120 Z"/>
+    
+    <!-- Muscular torso/shoulders -->
+    <ellipse cx="150" cy="180" rx="40" ry="25" fill="white"/>
+    <ellipse cx="250" cy="180" rx="40" ry="25" fill="white"/>
+    <path d="M120 170 C120 160 130 155 140 155 L260 155 C270 155 280 160 280 170 L280 190 C280 195 275 200 270 200 L130 200 C125 200 120 195 120 190 Z"/>
+  </g>
+  
+  <!-- TRIOMPHE text -->
+  <text x="200" y="230" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">
+    TRIOMPHE
+  </text>
+</svg>
