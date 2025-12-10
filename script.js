@@ -18,6 +18,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Custom scroll for programmes section
+    document.querySelectorAll('a[href="#programmes"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Programmes link clicked');
+            const programmesSection = document.getElementById('programmes');
+            if (programmesSection) {
+                const rect = programmesSection.getBoundingClientRect();
+                const sectionTop = window.pageYOffset + rect.top;
+                const sectionHeight = rect.height;
+                const windowHeight = window.innerHeight;
+                const scrollTo = sectionTop;
+                
+                console.log('Section top:', sectionTop, 'Section height:', sectionHeight, 'Scroll to:', scrollTo);
+                
+                window.scrollTo({
+                    top: Math.max(0, scrollTo),
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Also handle clicks on buttons with text "Voir les programmes"
+     document.querySelectorAll('button, .btn').forEach(button => {
+         if (button.textContent.includes('Voir les programmes')) {
+             button.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 console.log('Programmes button clicked');
+                 const programmesSection = document.getElementById('programmes');
+                 if (programmesSection) {
+                     const rect = programmesSection.getBoundingClientRect();
+                     const sectionTop = window.pageYOffset + rect.top;
+                     const sectionHeight = rect.height;
+                     const windowHeight = window.innerHeight;
+                     const scrollTo = sectionTop;
+                     
+                     console.log('Button - Section top:', sectionTop, 'Section height:', sectionHeight, 'Scroll to:', scrollTo);
+                     
+                     window.scrollTo({
+                         top: Math.max(0, scrollTo),
+                         behavior: 'smooth'
+                     });
+                 }
+             });
+         }
+     });
+
     // Scroll Event for Header with fade effect
     let lastScrollTop = 0;
     window.addEventListener('scroll', function() {
@@ -35,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             header.classList.add('scrolled');
             
             // Hide header when scrolling down, show when scrolling up
-            if (currentScroll > lastScrollTop && currentScroll > 200) {
+            if (currentScroll > lastScrollTop && currentScroll > 50) {
                 // Scrolling down - hide header
                 header.classList.add('hidden');
             } else {
@@ -48,7 +96,138 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         lastScrollTop = currentScroll;
+        
+        // Logo transformation based on current section
+        updateLogoForCurrentSection();
     });
+    
+    // Logo transformation function
+    function updateLogoForCurrentSection() {
+        const logoTitle = document.querySelector('.logo h1');
+        const sections = ['accueil', 'transformations', 'programmes', 'temoignages', 'contact'];
+        const scrollPosition = window.scrollY + 100; // Offset for header height
+        
+        let currentSection = 'accueil'; // Default
+        
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = sectionId;
+                }
+            }
+        });
+        
+        // Remove all section classes
+        sections.forEach(sectionId => {
+            logoTitle.classList.remove(`section-${sectionId}`);
+        });
+        
+        // Add current section class
+        logoTitle.classList.add(`section-${currentSection}`);
+    }
+    
+    // Initialize logo on page load
+    updateLogoForCurrentSection();
+    
+    // 3D Scroll Effects
+    function handle3DScrollEffects() {
+        const elements = document.querySelectorAll('.glass-card, .programme-card, .testimonial-card, .hero-image, .section-header');
+        const windowHeight = window.innerHeight;
+        const scrollTop = window.scrollY;
+        
+        elements.forEach(element => {
+            const elementTop = element.offsetTop;
+            const elementHeight = element.offsetHeight;
+            const elementCenter = elementTop + (elementHeight / 2);
+            const screenCenter = scrollTop + (windowHeight / 2);
+            
+            // Calculate distance from screen center
+            const distance = Math.abs(elementCenter - screenCenter);
+            const maxDistance = windowHeight / 2;
+            
+            // Apply 3D effect when element is in the center portion of the screen
+            if (distance < maxDistance * 0.8) {
+                element.classList.add('scroll-3d-active');
+            } else {
+                element.classList.remove('scroll-3d-active');
+            }
+        });
+    }
+    
+    // Add 3D effects to scroll event
+    window.addEventListener('scroll', handle3DScrollEffects);
+    
+    // Initialize 3D effects on page load
+    handle3DScrollEffects();
+    
+    // Dynamic Shadow Effects
+    let lastScrollDirection = 'down';
+    let lastScrollY = window.scrollY;
+    
+    function handleDynamicShadows() {
+        const currentScrollY = window.scrollY;
+        const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+        
+        if (scrollDirection !== lastScrollDirection) {
+            lastScrollDirection = scrollDirection;
+        }
+        
+        const elements = document.querySelectorAll('.glass-card, .programme-card, .testimonial-card, .hero-content');
+        const windowHeight = window.innerHeight;
+        const scrollTop = window.scrollY;
+        
+        elements.forEach(element => {
+            // Add dynamic-shadow class if not present
+            if (!element.classList.contains('dynamic-shadow')) {
+                element.classList.add('dynamic-shadow');
+            }
+            
+            const elementTop = element.offsetTop;
+            const elementHeight = element.offsetHeight;
+            const elementBottom = elementTop + elementHeight;
+            const viewportTop = scrollTop;
+            const viewportBottom = scrollTop + windowHeight;
+            
+            // Calculate visibility percentage
+            const visibleTop = Math.max(elementTop, viewportTop);
+            const visibleBottom = Math.min(elementBottom, viewportBottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+            const visibilityRatio = visibleHeight / elementHeight;
+            
+            // Remove all depth classes
+            element.classList.remove('depth-1', 'depth-2', 'depth-3', 'depth-4', 'depth-max', 'shadow-up', 'shadow-down');
+            
+            if (visibilityRatio > 0) {
+                // Apply depth based on visibility and position
+                if (visibilityRatio >= 0.8) {
+                    element.classList.add('depth-max');
+                } else if (visibilityRatio >= 0.6) {
+                    element.classList.add('depth-4');
+                } else if (visibilityRatio >= 0.4) {
+                    element.classList.add('depth-3');
+                } else if (visibilityRatio >= 0.2) {
+                    element.classList.add('depth-2');
+                } else {
+                    element.classList.add('depth-1');
+                }
+                
+                // Add directional shadow based on scroll direction
+                element.classList.add(`shadow-${scrollDirection}`);
+            }
+        });
+        
+        lastScrollY = currentScrollY;
+    }
+    
+    // Add dynamic shadows to scroll event
+    window.addEventListener('scroll', handleDynamicShadows);
+    
+    // Initialize dynamic shadows on page load
+    handleDynamicShadows();
 
     // FAQ Accordion
     faqItems.forEach(item => {
@@ -211,6 +390,103 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize active nav link
     setActiveNavLink();
+
+
+    
+    // User Engagement Tracking System
+    function initializeEngagementTracking() {
+        let engagementScore = 0;
+        let interactionCount = 0;
+        let timeOnPage = 0;
+        let scrollDepth = 0;
+        const startTime = Date.now();
+        
+        // Track time on page
+        setInterval(() => {
+            timeOnPage = (Date.now() - startTime) / 1000;
+            updateEngagementLevel();
+        }, 1000);
+        
+        // Track scroll depth
+        function trackScrollDepth() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const currentScrollDepth = (scrollTop / docHeight) * 100;
+            scrollDepth = Math.max(scrollDepth, currentScrollDepth);
+        }
+        
+        // Track interactions
+        function trackInteraction() {
+            interactionCount++;
+            updateEngagementLevel();
+        }
+        
+        // Calculate engagement level
+        function updateEngagementLevel() {
+            // Base score from time (max 30 points for 60+ seconds)
+            const timeScore = Math.min(timeOnPage / 2, 30);
+            
+            // Interaction score (5 points per interaction, max 25)
+            const interactionScore = Math.min(interactionCount * 5, 25);
+            
+            // Scroll score (max 25 points for 80%+ scroll)
+            const scrollScore = Math.min((scrollDepth / 80) * 25, 25);
+            
+            // Hover/focus bonus (max 20 points)
+            const hoverScore = Math.min(hoverTime / 5, 20);
+            
+            engagementScore = timeScore + interactionScore + scrollScore + hoverScore;
+            
+            // Apply engagement class to body
+            const body = document.body;
+            body.classList.remove('engagement-low', 'engagement-medium', 'engagement-high', 'engagement-max');
+            
+            if (engagementScore >= 80) {
+                body.classList.add('engagement-max');
+            } else if (engagementScore >= 60) {
+                body.classList.add('engagement-high');
+            } else if (engagementScore >= 30) {
+                body.classList.add('engagement-medium');
+            } else {
+                body.classList.add('engagement-low');
+            }
+        }
+        
+        // Track hover time
+        let hoverTime = 0;
+        let hoverStartTime = 0;
+        
+        // Add event listeners
+        window.addEventListener('scroll', () => {
+            trackScrollDepth();
+            updateEngagementLevel();
+        });
+        
+        // Track clicks on interactive elements
+        document.addEventListener('click', trackInteraction);
+        
+        // Track hover on cards and buttons
+        const interactiveElements = document.querySelectorAll('.glass-card, .btn, .timeline-milestone, .programme-card');
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                hoverStartTime = Date.now();
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                if (hoverStartTime) {
+                    hoverTime += (Date.now() - hoverStartTime) / 1000;
+                    hoverStartTime = 0;
+                    updateEngagementLevel();
+                }
+            });
+        });
+        
+        // Initial engagement level
+        updateEngagementLevel();
+    }
+    
+    // Initialize engagement tracking
+    initializeEngagementTracking();
 
     // Add parallax effect to background
     window.addEventListener('mousemove', function(e) {
