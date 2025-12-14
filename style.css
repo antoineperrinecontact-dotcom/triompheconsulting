@@ -1344,7 +1344,7 @@ footer {
 .footer-links {
     display: flex;
     gap: 60px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .footer-links-column h3 {
@@ -1381,6 +1381,20 @@ footer {
     border-top: 1px solid var(--glass-border);
     font-size: 0.9rem;
     opacity: 0.7;
+}
+
+/* Footer spacing aligned with homepage */
+.glass-footer .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.glass-footer .footer-content {
+    gap: 60px;
+}
+.glass-footer .footer-links {
+    gap: 80px;
 }
 
 /* Responsive Styles */
