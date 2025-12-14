@@ -199,6 +199,10 @@ body.cgv-clear::before {
 .cgv-clear .section-header h2 {
     color: #ffffff;
 }
+.cgv-clear .section-header p {
+    color: #ffffff;
+    opacity: 0.9;
+}
 .cgv-clear .dash-list {
     list-style: none;
     padding-left: 0;
